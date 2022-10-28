@@ -1,4 +1,4 @@
-- 👋 Hi, I’m @dev-ansh-r
+- 👋 Hi, I’m Devansh Shukla
 - 👀 I’m interested in Science and Maths
 - 🌱 I’m currently Pursuing Engineering
 - 💞️ I’m looking to collaborate on IoT and Embedded
