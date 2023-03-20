@@ -4,7 +4,7 @@ You can click the Preview link to take a look at your changes.
 --->
 
 # 💫 About Me:
-Hi, I am Devansh Shukla<br><br>🔭 "Obsessed with exploring the vast expanse of knowledge, unearthing precious pearls of wisdom and vanquishing the darkness of ignorance - I am the mighty Research Enthusiast!" 😂😂.<br>👀 I’m interested in Science and Maths.<br>🤝 I’m looking to collaborate on IoT and Embedded Solutions.<br>🌱 I’m currently Pursuing an Engineering Degree or should I say, " I am currently decoding the laws of science" .<br>💬 Ask me about **Stars**💫, Startups and Technology🤖.<br>⚡ Fun fact, I sleep a lot.<br>
+Hi, I am Devansh Shukla<br><br>🔭 *"Currently Obsessed with exploring the vast expanse of knowledge, unearthing precious pearls of wisdom and vanquishing the darkness of ignorance - I am the mighty Research Enthusiast!"* 😂😂. <br><br>👀 I’m interested in Science and Maths.<br>🤝 I’m looking to collaborate on IoT and Embedded Solutions.<br>🌱 I’m currently Pursuing an Engineering Degree or should I say, " I am currently decoding the laws of science". <br>💬 Ask me about **Stars**💫, Startups and Technology🤖. <br>⚡ Fun fact, I sleep a lot.<br>
 - This is how my sleep cycle looks like 😂😂😂....
 
 ![Image](https://github.com/dev-ansh-r/Arduino_bits/blob/main/serial%20plotter/serial_plotter04.png)
