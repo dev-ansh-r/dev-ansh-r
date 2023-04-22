@@ -6,6 +6,9 @@ You can click the Preview link to take a look at your changes.
 <!--   my-ticker -->    
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&center=true&vCenter=true&width=600&lines=Hi+there+👋,+I+am+Devansh+Shukla;+Welcome+to+My+Profile!;Over+2+years+of+experience+building+IoT+solutions;Always+learning+new+things;Trying+to+do+better;)](https://git.io/typing-svg)
 
+<!-- COntributions 
+<a href="https://github.com/dev-ansh-r/dev-ansh-r/graphs/contributors"><img src="https://img.shields.io/github/contributors/dev-ansh-r/dev-ansh-r?color=blue" align="right" ></a> -->
+
 
 # 💫 Know More About me
 🔭 *"Currently Obsessed with exploring the vast expanse of knowledge, unearthing precious pearls of wisdom and vanquishing the darkness of ignorance - I am the mighty Research Enthusiast!"* 😂😂. <br><br>👀 I’m interested in Science and Maths.<br>🤝 I’m looking to collaborate on IoT and Embedded Solutions.<br>🌱 I’m currently Pursuing an Engineering Degree or should I say, " I am currently decoding the laws of science". <br>💬 Ask me about **Stars**💫, Startups and Technology🤖. <br>⚡ Fun fact, I sleep a lot.<br>
