@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="427" y1="0" x2="427" y2="151.246" id="gradient-0">
+      <stop offset="0" style="stop-color: rgba(214, 147, 147, 1)"/>
+      <stop offset="1" style="stop-color: rgba(186, 73, 73, 1)"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="427" y1="0" x2="427" y2="156.243" id="gradient-1">
+      <stop offset="0" style="stop-color: rgba(214, 147, 147, 1)"/>
+      <stop offset="1" style="stop-color: rgba(186, 73, 73, 1)"/>
+    </linearGradient>
+  </defs>
+  <g transform="matrix(0.549328, 0, 0, 0.472916, 9.436951, 28.652084)" style="" bx:origin="0.713 0.909">
+    <path d="" opacity="0.4" style="paint-order: stroke; fill: url(#gradient-0);">
+      <animate attributeName="d" dur="20s" repeatCount="indefinite" keyTimes="0;0.333;0.667;1" calcmod="spline" keySplines="0.2 0 0.2 1;0.2 0 0.2 1;0.2 0 0.2 1" begin="0s" values="M0 0L 0 120Q 213.5 160 427 130T 854 155L 854 0 Z;M0 0L 0 145Q 213.5 160 427 140T 854 130L 854 0 Z;M0 0L 0 165Q 213.5 135 427 165T 854 130L 854 0 Z;M0 0L 0 120Q 213.5 160 427 130T 854 155L 854 0 Z"/>
+    </path>
+    <path d="" opacity="0.4" style="paint-order: stroke; fill: url(#gradient-1);">
+      <animate attributeName="d" dur="20s" repeatCount="indefinite" keyTimes="0;0.333;0.667;1" calcmod="spline" keySplines="0.2 0 0.2 1;0.2 0 0.2 1;0.2 0 0.2 1" begin="-10s" values="M0 0L 0 135Q 213.5 180 427 150T 854 160L 854 0 Z;M0 0L 0 150Q 213.5 120 427 120T 854 140L 854 0 Z;M0 0L 0 145Q 213.5 125 427 150T 854 165L 854 0 Z;M0 0L 0 135Q 213.5 180 427 150T 854 160L 854 0 Z"/>
+    </path>
+  </g>
+  <text text-anchor="middle" alignment-baseline="middle" x="675.63" y="294.958" class="text" style="fill: rgb(247, 245, 245); white-space: pre; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Helvetica, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;; font-size: 70px; font-weight: 700; line-height: 112px; perspective-origin: 410.562px 46.7344px;" stroke="#none" stroke-width="10" transform="matrix(0.539429, 0, 0, 0.50797, -134.20282, -20.643463)" bx:origin="0.406 -0.193"> Welcome to my profile!</text>
+</svg>

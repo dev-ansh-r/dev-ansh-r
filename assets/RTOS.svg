@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="22.382 20.062 38.429 12.593" xmlns="http://www.w3.org/2000/svg">
+  <g id="layer1" transform="matrix(0.166457, 0, 0, 0.14615, -15.687698, -20.026276)" style="">
+    <rect style="fill:#ffffff;fill-opacity:1;stroke:#28d634;stroke-width:6.89775467;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" id="rect2914" width="230.8663" height="84.638847" x="228.70546" y="275.82581" rx="8.6973181" ry="7.6542048"/>
+    <text style="font-size: 64.4443px; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; fill: rgb(101, 255, 101); fill-opacity: 1; stroke: none; font-family: SteelTongs; white-space: pre;" x="270.72729" y="327.22363" id="text2902" transform="scale(0.97727451,1.0232539)"><tspan id="tspan2904" x="270.72729" y="327.22363" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#65ff65;fill-opacity:1;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans Bold">RTOS</tspan></text>
+    <text style="font-size: 31.4964px; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; fill: rgb(0, 0, 0); fill-opacity: 1; stroke: none; font-family: SteelTongs; white-space: pre;" x="-372.44635" y="247.33051" id="text2906" transform="matrix(0,-0.93598609,1.068392,0,0,0)"><tspan id="tspan2908" x="-372.44635" y="247.33051" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial Black;-inkscape-font-specification:'Arial Black, Bold'">free</tspan></text>
+    <rect style="fill:#000000;fill-opacity:1;stroke:none" id="rect2910" width="177.69412" height="6.7869282" x="270.24313" y="342.2027"/>
+  </g>
+</svg>
