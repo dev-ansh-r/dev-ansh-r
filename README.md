@@ -6,7 +6,7 @@ You can click the Preview link to take a look at your changes.
 ![](assets/profile.svg)
 
 <!--   my-ticker -->    
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&center=true&vCenter=true&width=600&lines=Hi+there+👋,+I+am+Devansh+Shukla;+Welcome+to+My+Profile!;Over+2+years+of+experience+building+IoT+solutions;Always+learning+new+things;Trying+to+do+better;)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&center=true&vCenter=true&width=600&lines=Hi+there+👋,+I+am+Devansh+Shukla;+Welcome+to+My+Profile!;Over+4+years+of+experience+building+IoT+solutions;Always+learning+new+things;Trying+to+do+better;)](https://git.io/typing-svg)
 
 <!-- COntributions 
 <a href="https://github.com/dev-ansh-r/dev-ansh-r/graphs/contributors"><img src="https://img.shields.io/github/contributors/dev-ansh-r/dev-ansh-r?color=blue" align="right" ></a> -->
