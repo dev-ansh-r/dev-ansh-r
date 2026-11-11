@@ -11,7 +11,7 @@
   <a href="https://www.linkedin.com/in/roboticsbydev/"><img src="https://img.shields.io/badge/LinkedIn-0A0A0A?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0Q5Nzc1NyIvPjxnIGZpbGw9IiMwQTBBMEEiPjxjaXJjbGUgY3g9IjcuMSIgY3k9IjYuOSIgcj0iMS43Ii8%2BPHJlY3QgeD0iNS42IiB5PSI5LjMiIHdpZHRoPSIzIiBoZWlnaHQ9IjkuMiIvPjxwYXRoIGQ9Ik0xMC40IDkuM2gyLjl2MS4zYy41LS45IDEuNi0xLjUgMi45LTEuNSAyLjQgMCAzLjMgMS42IDMuMyA0LjF2NS4zaC0zdi00LjhjMC0xLjMtLjQtMi4xLTEuNS0yLjFzLTEuNy45LTEuNyAyLjF2NC44aC0yLjl6Ii8%2BPC9nPjwvc3ZnPg%3D%3D" alt="LinkedIn"></a>
   <a href="https://medium.com/@roboticsbydev"><img src="https://img.shields.io/badge/Medium-0A0A0A?style=for-the-badge&logo=medium&logoColor=D97757" alt="Medium"></a>
   <a href="https://x.com/roboticsbydev"><img src="https://img.shields.io/badge/X-0A0A0A?style=for-the-badge&logo=x&logoColor=D97757" alt="X"></a>
-  <a href="https://instagram.com/roboticsbydev"><img src="https://img.shields.io/badge/Instagram-0A0A0A?style=for-the-badge&logo=instagram&logoColor=D97757" alt="Instagram"></a>
+  <a href="https://www.instagram.com/roboticsbydev/"><img src="https://img.shields.io/badge/Instagram-0A0A0A?style=for-the-badge&logo=instagram&logoColor=D97757" alt="Instagram"></a>
   <a href="https://huggingface.co/roboticsbydev"><img src="https://img.shields.io/badge/Hugging%20Face-0A0A0A?style=for-the-badge&logo=huggingface&logoColor=D97757" alt="Hugging Face"></a>
   <a href="https://linktr.ee/roboticsbydev"><img src="https://img.shields.io/badge/Linktree-0A0A0A?style=for-the-badge&logo=linktree&logoColor=D97757" alt="Linktree"></a>
 </p>
