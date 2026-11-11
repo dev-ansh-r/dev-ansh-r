@@ -3,7 +3,7 @@ name: Mission-Log-Graph
 # Regenerates the Hail Mary mission-log graph daily and publishes it to the
 # `output` branch (a single force-pushed commit), so `main` only carries your
 # own commits. README.md loads it from:
-#   https://raw.githubusercontent.com/<owner>/<repo>/output/mission.svg
+#   https://raw.githubusercontent.com/<owner>/<repo>/refs/heads/output/mission.svg
 
 on:
   schedule:
