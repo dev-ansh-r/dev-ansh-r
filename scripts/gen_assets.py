@@ -8,8 +8,23 @@ import re
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-OUT = Path(__file__).resolve().parent.parent / "assets"
-OUT.mkdir(exist_ok=True)
+import os
+SRC = Path(__file__).resolve().parent.parent / "assets"          # inputs (photos, logos)
+OUT = Path(os.environ.get("PROFILE_OUT", SRC))                   # where SVGs are written
+OUT.mkdir(parents=True, exist_ok=True)
+# Optional image slots: drop ghost.*, movies.*, luffy.* (webp/png/jpg) into this folder.
+# Leave it empty/missing to use the built-in original visuals.
+CUSTOM = Path(os.environ.get("PROFILE_CUSTOM", SRC / "custom"))
+
+
+def custom_image(name):
+    """data: URI for CUSTOM/<name>.(webp|png|jpg|jpeg), or None."""
+    import base64
+    for ext, mime in (("webp", "webp"), ("png", "png"), ("jpg", "jpeg"), ("jpeg", "jpeg")):
+        p = CUSTOM / f"{name}.{ext}"
+        if p.exists():
+            return f"data:image/{mime};base64," + base64.b64encode(p.read_bytes()).decode()
+    return None
 
 # palette: mono + coral
 INK = "#0A0A0A"
@@ -179,7 +194,7 @@ def photo_katana(x, y, width, angle=0, rim="#FFFFFF", rim_op=0.35):
     import base64
     _pk[0] += 1
     k = _pk[0]
-    data = base64.b64encode((OUT / "katana.webp").read_bytes()).decode()
+    data = base64.b64encode((SRC / "katana.webp").read_bytes()).decode()
     h = width * KATANA_RATIO
     return (
         f'<defs><filter id="rim{k}" x="-5%" y="-40%" width="110%" height="180%">'
@@ -209,8 +224,8 @@ def hero():
     )
     # portrait (U1 = the human) + spec sheet about me
     import base64
-    photo = base64.b64encode((OUT / "avatar.jpg").read_bytes()).decode()
-    pcx, pcy, pr = 662, 140, 66
+    photo = base64.b64encode((SRC / "avatar.jpg").read_bytes()).decode()
+    pcx, pcy, pr = 650, 140, 58
     ring = (
         f'<circle cx="{pcx}" cy="{pcy}" r="{pr+10}" fill="none" stroke="{ORANGE}" stroke-width="1" stroke-dasharray="2 5" class="spin"/>'
         f'<circle cx="{pcx}" cy="{pcy}" r="{pr+2}" fill="none" stroke="{ORANGE}" stroke-width="2"/>'
@@ -224,20 +239,20 @@ def hero():
     rows = [
         ("BASE", "Coimbatore, India"),
         ("FOCUS", "Physical AI · Robotics"),
-        ("ROLE", "Engineer · Co-Founder"),
-        ("LEADS", "AI Tamil Nadu"),
+        ("ROLE", "Engineer · Entrepreneur"),
+        ("COMMUNITY", "AI Tamil Nadu"),
         ("RIDES", "Kaze · Himalayan 450"),
-        ("FUEL", "Anime · Ghost of Tsushima"),
+        ("FUEL", "Anime, Games (Jin Sakai)"),
         ("MODE", "build · break · rebuild"),
     ]
-    rx, ry0, step = 768, 66, 29
+    rx, ry0, step = 742, 66, 29
     spec = [f'<text x="{rx}" y="{ry0-22}" class="mono" font-size="9" fill="{ORANGE}" letter-spacing="2">SPEC SHEET</text>',
             f'<path d="M {rx} {ry0-14} H {px1-20}" stroke="#2A2A2A"/>']
     for i, (k_, v) in enumerate(rows):
         y = ry0 + i * step
         spec.append(
             f'<text x="{rx}" y="{y}" class="mono" font-size="8.5" fill="{MUTED}" letter-spacing="1.5">{k_}</text>'
-            f'<text x="{rx+50}" y="{y}" class="sans" font-size="12.5" fill="{TEXT}">{t(v)}</text>'
+            f'<text x="{rx+72}" y="{y}" class="sans" font-size="12" fill="{TEXT}">{t(v)}</text>'
             f'<path d="M {rx} {y+10} H {px1-20}" stroke="#1C1C1C"/>'
         )
     tb = (
@@ -264,10 +279,10 @@ def hero():
   {''.join(spec)}
   {tb}
   <text x="56" y="84" class="mono" font-size="15" fill="{ORANGE}" letter-spacing="1">// physical ai &amp; robotics</text>
-  <text x="54" y="152" class="sans" font-size="62" font-weight="800" fill="{TEXT}" letter-spacing="-1">Devansh Shukla</text>
-  {photo_katana(56, 186, 440, -1)}
-  <text x="56" y="242" class="sans" font-size="19" fill="{SOFT}">Engineer  ·  Co-Founder  ·  Community Lead  ·  Open Source</text>
-  <text x="56" y="276" class="sans" font-size="16" fill="{MUTED}">I build intelligent machines, and make them run on real hardware.</text>
+  <text x="54" y="152" class="sans" font-size="76" font-weight="800" fill="{TEXT}" letter-spacing="-1.5">Devansh</text>
+  <rect x="58" y="176" width="64" height="4" rx="2" fill="{ORANGE}"/>
+  <text x="56" y="242" class="sans" font-size="19" fill="{SOFT}">Engineer  ·  Entrepreneur  ·  Community Lead  ·  Open Source</text>
+  <text x="56" y="276" class="sans" font-size="16" fill="{MUTED}">I build intelligent machines, ones that run on metal.</text>
 </g>"""
     css = (
         KATANA_CSS
@@ -356,7 +371,7 @@ def pill_row(x, y, tags, color, size=12, gap=8):
     return "".join(out)
 
 
-def card(name, kicker, title, lines, tags, color, logo=None):
+def card(name, kicker, title, lines, tags, color, logo=None, photo=None):
     W, H = 490, 206
     desc = "".join(
         f'<text x="34" y="{(124 if logo else 118) + i*22}" class="sans" font-size="15" fill="{MUTED}">{t(l)}</text>'
@@ -364,18 +379,32 @@ def card(name, kicker, title, lines, tags, color, logo=None):
     )
     if logo:
         import base64
-        data = base64.b64encode((OUT / logo[0]).read_bytes()).decode()
+        data = base64.b64encode((SRC / logo[0]).read_bytes()).decode()
         lh = 58
         title_svg = (f'<image x="30" y="50" height="{lh}" width="{lh * logo[1]:.0f}" '
                      f'href="data:image/png;base64,{data}"/>')
     else:
         title_svg = f'<text x="34" y="80" class="sans" font-size="25" font-weight="800" fill="{TEXT}">{t(title)}</text>'
+    photo_svg = ""
+    if photo:   # real photo on the right, edges faded into the card
+        import base64
+        pdata = base64.b64encode((SRC / photo[0]).read_bytes()).decode()
+        ph = H - 20
+        pw = ph * photo[1]
+        px = W - pw - 18
+        photo_svg = (
+            f'<defs><radialGradient id="pfade" cx="0.5" cy="0.5" r="0.62">'
+            f'<stop offset="0.62" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>'
+            f'<mask id="pmask"><rect x="{px:.0f}" y="10" width="{pw:.0f}" height="{ph}" fill="url(#pfade)"/></mask></defs>'
+            f'<image x="{px:.0f}" y="10" width="{pw:.0f}" height="{ph}" mask="url(#pmask)" '
+            f'href="data:image/webp;base64,{pdata}"/>'
+        )
     body = f"""
 <rect x="1" y="1" width="{W-2}" height="{H-2}" rx="16" fill="{CARD}" stroke="{LINE}" stroke-width="1.5"/>
 <rect x="1" y="24" width="5" height="{H-48}" rx="2.5" fill="{color}"/>
 <text x="34" y="40" class="mono" font-size="11.5" fill="{color}" letter-spacing="2">{t(kicker)}</text>
 {title_svg}
-<text x="{W-34}" y="80" text-anchor="end" class="mono" font-size="18" fill="{color}">↗</text>
+{photo_svg if photo else f'<text x="{W-34}" y="80" text-anchor="end" class="mono" font-size="18" fill="{color}">↗</text>'}
 {desc}
 {pill_row(34, 162, tags, color)}"""
     svg(name, W, H, body)
@@ -383,8 +412,9 @@ def card(name, kicker, title, lines, tags, color, logo=None):
 
 def cards():
     card("card-qroot.svg", "PHYSICAL AI · ROBOTICS", "Qroot microbot",
-         ["A walking microbot that senses, thinks and moves", "on a single edge board. No PC. No cloud."],
-         ["Robotics", "C++", "Python", "RealSense"], "#22C55E", logo=("qroot-logo.png", 480 / 205))
+         ["A walking microbot that senses, thinks", "and moves on one edge board. No cloud."],
+         ["Robotics", "C++", "Python"], "#22C55E", logo=("qroot-logo.png", 480 / 205),
+         photo=("qroot-bot.webp", 202 / 360))
     card("card-skills.svg", "CLAUDE CODE · EDGE AI", "qualcomm-claude-skills",
          ["8 Claude Code skills that turn hard-won edge", "deployment know-how into repeatable flows."],
          ["Claude Code", "Edge AI", "Quantization", "Apache-2.0"], RED)
@@ -457,55 +487,198 @@ def certs():
          "Fundamentals with CUDA C/C++ · NVIDIA DLI", "VIEW CERTIFICATE ↗", icon("nvidia", 46, 40, 40, "#76B900"))
 
 
+# ---------------------------------------------------------------- straw hat
+def straw_hat(cx, cy, k=1.0):
+    """An original straw-hat drawing: woven straw brim and crown, red band."""
+    bw, bh = 92 * k, 15 * k          # brim half-width / half-height
+    cw, ch = 44 * k, 36 * k          # crown half-width / height
+    weave = "".join(
+        f'<path d="M {cx-bw+10*k + i*14*k:.1f} {cy+2*k:.1f} q {7*k:.1f} {4*k:.1f} {14*k:.1f} 0" '
+        f'fill="none" stroke="#B8902F" stroke-width="{1*k:.1f}" opacity="0.6"/>'
+        for i in range(int((2 * bw - 20 * k) / (14 * k)))
+    )
+    crown_weave = "".join(
+        f'<path d="M {cx-cw+6*k:.1f} {cy-6*k - j*7*k:.1f} Q {cx:.1f} {cy-10*k - j*7*k:.1f} {cx+cw-6*k:.1f} {cy-6*k - j*7*k:.1f}" '
+        f'fill="none" stroke="#B8902F" stroke-width="{0.9*k:.1f}" opacity="0.5"/>'
+        for j in range(2, 5)
+    )
+    return f"""
+<g>
+  <ellipse cx="{cx}" cy="{cy+6*k:.1f}" rx="{bw*1.02:.1f}" ry="{bh*0.9:.1f}" fill="#000" opacity="0.35"/>
+  <ellipse cx="{cx}" cy="{cy}" rx="{bw:.1f}" ry="{bh:.1f}" fill="#E9C46A" stroke="#B8902F" stroke-width="{1.5*k:.1f}"/>
+  {weave}
+  <path d="M {cx-cw:.1f} {cy:.1f} C {cx-cw:.1f} {cy-ch*1.25:.1f}, {cx+cw:.1f} {cy-ch*1.25:.1f}, {cx+cw:.1f} {cy:.1f} Z" fill="#F0CF78" stroke="#B8902F" stroke-width="{1.5*k:.1f}"/>
+  <path d="M {cx-cw:.1f} {cy-1*k:.1f} Q {cx:.1f} {cy+5*k:.1f} {cx+cw:.1f} {cy-1*k:.1f} L {cx+cw-2*k:.1f} {cy-11*k:.1f} Q {cx:.1f} {cy-6*k:.1f} {cx-cw+2*k:.1f} {cy-11*k:.1f} Z" fill="#C8102E"/>
+</g>"""
+
+
 # ---------------------------------------------------------------- off the clock
+# ---------------------------------------------------------------- crew flag
+def crew_flag(mx, my, k=1.0):
+    """Original pirate flag: black flag waving off a wooden mast, plain skull and
+    crossbones, and a straw hat hung on the mast top. (mx, my) = mast top."""
+    s = lambda v: f"{v*k:.1f}"
+    fx = mx - 3 * k   # flag attaches to the mast's left side
+    flag = (f"M {fx:.1f} {my+14*k:.1f} "
+            f"C {fx-38*k:.1f} {my+2*k:.1f}, {fx-72*k:.1f} {my+26*k:.1f}, {fx-112*k:.1f} {my+12*k:.1f} "
+            f"C {fx-128*k:.1f} {my+8*k:.1f}, {fx-140*k:.1f} {my+14*k:.1f}, {fx-150*k:.1f} {my+12*k:.1f} "
+            f"L {fx-144*k:.1f} {my+92*k:.1f} "
+            f"C {fx-128*k:.1f} {my+96*k:.1f}, {fx-108*k:.1f} {my+86*k:.1f}, {fx-84*k:.1f} {my+96*k:.1f} "
+            f"C {fx-52*k:.1f} {my+108*k:.1f}, {fx-26*k:.1f} {my+86*k:.1f}, {fx:.1f} {my+96*k:.1f} Z")
+    cx, cy = fx - 74 * k, my + 52 * k          # emblem centre
+    bone = "#F2EFE6"
+
+    def crossbone(angle):
+        L = 46 * k
+        return (f'<g transform="rotate({angle} {cx:.1f} {cy+6*k:.1f})">'
+                f'<rect x="{cx-L:.1f}" y="{cy+3*k:.1f}" width="{2*L:.1f}" height="{s(6)}" rx="{s(3)}" fill="{bone}"/>'
+                + "".join(f'<circle cx="{cx+e*L:.1f}" cy="{cy+3*k+dy*k:.1f}" r="{s(4.2)}" fill="{bone}"/>'
+                          for e in (-1, 1) for dy in (0, 6))
+                + "</g>")
+    skull = (
+        f'<circle cx="{cx:.1f}" cy="{cy-4*k:.1f}" r="{s(17)}" fill="{bone}"/>'
+        f'<rect x="{cx-10*k:.1f}" y="{cy+6*k:.1f}" width="{s(20)}" height="{s(12)}" rx="{s(3)}" fill="{bone}"/>'
+        f'<ellipse cx="{cx-6.5*k:.1f}" cy="{cy-5*k:.1f}" rx="{s(4.6)}" ry="{s(5.4)}" fill="#0E0E0E"/>'
+        f'<ellipse cx="{cx+6.5*k:.1f}" cy="{cy-5*k:.1f}" rx="{s(4.6)}" ry="{s(5.4)}" fill="#0E0E0E"/>'
+        f'<path d="M {cx:.1f} {cy+1*k:.1f} l {s(-2.6)} {s(4.5)} h {s(5.2)} z" fill="#0E0E0E"/>'
+        + "".join(f'<line x1="{cx+dx*k:.1f}" y1="{cy+10*k:.1f}" x2="{cx+dx*k:.1f}" y2="{cy+18*k:.1f}" stroke="#0E0E0E" stroke-width="{s(1.1)}"/>'
+                  for dx in (-5, 0, 5))
+    )
+    mast = (
+        f'<defs><linearGradient id="wood" x1="0" x2="1"><stop offset="0" stop-color="#6B4423"/>'
+        f'<stop offset="0.5" stop-color="#A0703F"/><stop offset="1" stop-color="#5A381C"/></linearGradient></defs>'
+        f'<rect x="{mx-3*k:.1f}" y="{my:.1f}" width="{s(7)}" height="{s(132)}" rx="{s(2)}" fill="url(#wood)"/>'
+        f'<circle cx="{mx+0.5*k:.1f}" cy="{my-1*k:.1f}" r="{s(5)}" fill="#C9A15A"/>'
+    )
+    return f"""
+<g>
+  {mast}
+  <g class="wave" style="transform-origin:{fx:.1f}px {my+50*k:.1f}px">
+    <path d="{flag}" fill="#141414" stroke="#4A4A4A" stroke-width="{s(1.6)}"/>
+    {crossbone(28)}{crossbone(-28)}
+    {skull}
+  </g>
+  <g transform="rotate(-14 {mx:.1f} {my:.1f})">{straw_hat(mx + 2*k, my + 4*k, 0.36 * k)}</g>
+</g>"""
+
+
+FLAG_CSS = ".wave{animation:wave 4s ease-in-out infinite}@keyframes wave{50%{transform:skewY(-2.5deg) scaleX(.97)}}"
+
+
+def _wrap(text, n=26):
+    words, lines, cur = text.split(), [], ""
+    for w_ in words:
+        if cur and len(cur) + len(w_) + 1 > n:
+            lines.append(cur); cur = w_
+        else:
+            cur = (cur + " " + w_).strip()
+    lines.append(cur)
+    return lines
+
+
 def offclock():
-    W, H = 1000, 320
+    import base64
+    ghost, movies, luffy = custom_image("ghost"), custom_image("movies"), custom_image("luffy")
+    BH = 380                                     # custom Luffy banner height
+    W, H = 1000, (254 + BH + 26) if luffy else 420
     tiles = [
         ("PLAYING", RED, ["Ghost of", "Tsushima"], "all-time favourite"),
-        ("WATCHING", ORANGE, ["One Piece", "Naruto", "Demon Slayer"], ""),
-        ("CREW", GOLD, ["Luffy", "& Zoro"], "captain's orders are captain's orders"),
+        ("WATCHING", ORANGE, ["Movies", "Anime", "Manga"], "Shinobi of the Hidden Leaf"),
+        ("CREW", GOLD, ["Straw Hat", "Pirates"], "captain's orders are captain's orders"),
         ("RIDING", ORANGE, ["Kaze  風"], "Himalayan 450 · named for the wind"),
     ]
     tw, gap, x0, y0, th = 215, 20, 40, 66, 172
+    bike = base64.b64encode((SRC / "kaze.webp").read_bytes()).decode()
     out = [
         f'<rect width="{W}" height="{H}" rx="18" fill="{INK}"/>',
         wind(H - 40, 3, RED, W, 0.25, 11),
         f'<text x="40" y="44" class="mono" font-size="14" fill="{ORANGE}" letter-spacing="1">// off the clock</text>',
+        f'<defs><linearGradient id="shadeL" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity="0.82"/>'
+        f'<stop offset="0.55" stop-color="#000" stop-opacity="0.25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>'
+        f'<linearGradient id="shadeB" x1="0" y1="0" x2="0" y2="1"><stop offset="0.55" stop-color="#000" stop-opacity="0"/>'
+        f'<stop offset="1" stop-color="#000" stop-opacity="0.85"/></linearGradient></defs>',
     ]
     for i, (lab, c, big, sub) in enumerate(tiles):
         x = x0 + i * (tw + gap)
-        out.append(f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" rx="14" fill="{CARD}" stroke="{LINE}" stroke-width="1.5"/>')
+        out.append(f'<clipPath id="tile{i}"><rect x="{x}" y="{y0}" width="{tw}" height="{th}" rx="14"/></clipPath>')
+        out.append(f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" rx="14" fill="{CARD}"/>')
+        if lab == "CREW":     # original Grand Line scene: sky, clouds, sea
+            sea_y = y0 + th * 0.70
+            clouds = "".join(
+                f'<ellipse cx="{x+cx_:.0f}" cy="{y0+cy_:.0f}" rx="{rx_}" ry="{ry_}" fill="#FFFFFF" opacity="0.85"/>'
+                for cx_, cy_, rx_, ry_ in [(150, 92, 26, 9), (168, 86, 18, 9), (178, 112, 16, 5)]
+            )
+            waves = "".join(
+                f'<path d="M {x} {sea_y + 8 + j*12:.0f} ' + " ".join(f"q 9 -5 18 0" for _ in range(13)) + f'" fill="none" stroke="#9FD3FF" stroke-width="1.2" opacity="{0.6 - j*0.2:.1f}"/>'
+                for j in range(3)
+            )
+            out.append(
+                f'<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F5FB8"/>'
+                f'<stop offset="1" stop-color="#7DB8F0"/></linearGradient></defs>'
+                f'<g clip-path="url(#tile{i})"><rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#sky)"/>{clouds}'
+                f'<rect x="{x}" y="{sea_y:.0f}" width="{tw}" height="{th}" fill="#123A6B"/>{waves}'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeL)" opacity="0.75"/>'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeB)" opacity="0.6"/></g>'
+            )
+        # (image, crop viewBox in 1920x1080 space or None, extra dim)
+        slot = {"PLAYING": (ghost, "220 60 1100 820", 0.0), "WATCHING": (movies, None, 0.15)}.get(lab)
+        if slot and slot[0]:  # custom background image, darkened on the left for readable text
+            img = (f'<svg x="{x}" y="{y0}" width="{tw}" height="{th}" viewBox="{slot[1]}" preserveAspectRatio="xMidYMid slice">'
+                   f'<image width="1920" height="1080" href="{slot[0]}"/></svg>' if slot[1] else
+                   f'<image x="{x}" y="{y0}" width="{tw}" height="{th}" preserveAspectRatio="xMidYMid slice" href="{slot[0]}"/>')
+            out.append(
+                f'<g clip-path="url(#tile{i})">{img}'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="#000" opacity="{slot[2]}"/>'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeL)"/>'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeB)"/></g>'
+            )
+        if lab == "RIDING":   # Kaze: full-bleed photo, shaded for text
+            out.append(
+                f'<g clip-path="url(#tile{i})">'
+                f'<image x="{x}" y="{y0}" width="{tw}" height="{th}" preserveAspectRatio="xMidYMid slice" '
+                f'href="data:image/webp;base64,{bike}"/>'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeL)"/>'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeB)"/></g>'
+            )
+        out.append(f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" rx="14" fill="none" stroke="{LINE}" stroke-width="1.5"/>')
         out.append(f'<text x="{x+20}" y="{y0+30}" class="mono" font-size="11" fill="{c}" letter-spacing="3">{lab}</text>')
         size = 26 if len(big) < 3 else 21
         for j, b in enumerate(big):
             out.append(f'<text x="{x+20}" y="{y0+68 + j*(size+8)}" class="sans" font-size="{size}" font-weight="800" fill="{TEXT}">{t(b)}</text>')
         if sub:
-            # wrap sub to ~26 chars
-            words, lines, cur = sub.split(), [], ""
-            for w_ in words:
-                if len(cur) + len(w_) + 1 > 26:
-                    lines.append(cur); cur = w_
-                else:
-                    cur = (cur + " " + w_).strip()
-            lines.append(cur)
+            lines = _wrap(sub)
+            col = SOFT if lab in ("RIDING", "CREW") or (slot and slot[0]) else MUTED
             for j, l in enumerate(lines):
-                out.append(f'<text x="{x+20}" y="{y0+th-20 - (len(lines)-1-j)*18}" class="sans" font-size="13" fill="{MUTED}">{t(l)}</text>')
-    # katana stroke on the Tsushima tile
-    out.append(photo_katana(x0 + 196, y0 + 162, 150, -84))
-    out.append(f'<text x="{W/2}" y="{H-26}" text-anchor="middle" class="serif" font-size="20" font-style="italic" fill="{SOFT}">“As long as I live, I will win.”</text>')
-    svg("offclock.svg", W, H, "\n".join(out), WIND_CSS + KATANA_CSS)
+                out.append(f'<text x="{x+20}" y="{y0+th-20 - (len(lines)-1-j)*18}" class="sans" font-size="13" fill="{col}">{t(l)}</text>')
+        if lab == "CREW":
+            out.append(straw_hat(x + tw - 62, y0 + 42, 0.40))
+    if not ghost:
+        out.append(photo_katana(x0 + 196, y0 + 162, 150, -84))
+    if luffy:   # custom quote banner replaces the drawn flag + quote
+        out.append(f'<clipPath id="banner"><rect x="{x0}" y="254" width="{W-2*x0}" height="{BH}" rx="14"/></clipPath>'
+                   f'<image x="{x0}" y="254" width="{W-2*x0}" height="{BH}" preserveAspectRatio="xMidYMin slice" '
+                   f'href="{luffy}" clip-path="url(#banner)"/>'
+                   f'<rect x="{x0}" y="254" width="{W-2*x0}" height="{BH}" rx="14" fill="none" stroke="{LINE}" stroke-width="1.5"/>')
+        svg("offclock.svg", W, H, "\n".join(out), WIND_CSS + KATANA_CSS + FLAG_CSS)
+        return
+    out.append(crew_flag(372, 262, 1.0))
+    qx, qy = 590, 306
+    out.append(f'<text x="{qx}" y="{qy}" text-anchor="middle" class="mono" font-size="18" fill="{TEXT}">As long as I live,</text>')
+    out.append(f'<text x="{qx}" y="{qy+26}" text-anchor="middle" class="mono" font-size="18" fill="{TEXT}">There are infinite chances.</text>')
+    out.append(f'<text x="{qx}" y="{qy+62}" text-anchor="middle" class="mono" font-size="15" fill="{ORANGE}">- Monkey D. Luffy</text>')
+    svg("offclock.svg", W, H, "\n".join(out), WIND_CSS + KATANA_CSS + FLAG_CSS)
 
 
 # ---------------------------------------------------------------- footer
 def footer():
-    W, H = 1000, 172
+    W, H = 1000, 176
     body = f"""
 <rect width="{W}" height="{H}" rx="18" fill="{INK}"/>
 {wind(40, 4, ORANGE, W, 0.3, 8)}
-<text x="{W/2}" y="82" text-anchor="middle" class="serif" font-size="40" font-style="italic" fill="{TEXT}">Veni, vidi, vici.</text>
-<text x="{W/2}" y="114" text-anchor="middle" class="mono" font-size="13" fill="{ORANGE}" letter-spacing="4">I CAME · I SAW · I CONQUERED</text>
-{photo_katana(W/2 - 150, 146, 300, 0)}"""
-    svg("footer.svg", W, H, body, WIND_CSS + KATANA_CSS)
+<text x="{W/2}" y="80" text-anchor="middle" class="serif" font-size="40" font-style="italic" fill="{TEXT}">Veni, vidi, vici.</text>
+<text x="{W/2}" y="112" text-anchor="middle" class="mono" font-size="13" fill="{MUTED}" letter-spacing="4">I CAME · I SAW · I CONQUERED</text>
+<text x="{W/2}" y="146" text-anchor="middle" class="mono" font-size="15" fill="{ORANGE}">- Elias</text>"""
+    svg("footer.svg", W, H, body, WIND_CSS)
 
 
 if __name__ == "__main__":

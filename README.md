@@ -4,16 +4,16 @@
 
 
 <p align="center">
-  <img src="assets/hero.svg" width="100%" alt="Devansh Shukla. Physical AI and Robotics. Engineer, Co-Founder, Community Lead, Open Source. Photo with a spec sheet: based in Coimbatore, India; leads AI Tamil Nadu; rides Kaze, a Himalayan 450; fuelled by anime and Ghost of Tsushima.">
+  <img src="assets/hero.svg" width="100%" alt="Devansh. Physical AI and Robotics. Engineer, Entrepreneur, Community Lead, Open Source. I build intelligent machines, ones that run on metal. Photo with a spec sheet: based in Coimbatore, India; community: AI Tamil Nadu; rides Kaze, a Himalayan 450; fuel: anime and games (Jin Sakai).">
 </p>
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/roboticsbydev/"><img src="https://img.shields.io/badge/LinkedIn-0A0A0A?style=for-the-badge&labelColor=0A0A0A&color=0A0A0A" alt="LinkedIn"></a>
-  <a href="https://medium.com/@dev-ansh-r"><img src="https://img.shields.io/badge/Medium-0A0A0A?style=for-the-badge&logo=medium&logoColor=D97757" alt="Medium"></a>
-  <a href="https://twitter.com/r_devansh"><img src="https://img.shields.io/badge/X-0A0A0A?style=for-the-badge&logo=x&logoColor=D97757" alt="X"></a>
-  <a href="https://instagram.com/r_dev_ansh"><img src="https://img.shields.io/badge/Instagram-0A0A0A?style=for-the-badge&logo=instagram&logoColor=D97757" alt="Instagram"></a>
-  <a href="https://huggingface.co/dev-ansh-r"><img src="https://img.shields.io/badge/Hugging%20Face-0A0A0A?style=for-the-badge&logo=huggingface&logoColor=D97757" alt="Hugging Face"></a>
-  <a href="https://linktr.ee/dev_ansh_r"><img src="https://img.shields.io/badge/Linktree-0A0A0A?style=for-the-badge&logo=linktree&logoColor=D97757" alt="Linktree"></a>
+  <a href="https://www.linkedin.com/in/roboticsbydev/"><img src="https://img.shields.io/badge/LinkedIn-0A0A0A?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0Q5Nzc1NyIvPjxnIGZpbGw9IiMwQTBBMEEiPjxjaXJjbGUgY3g9IjcuMSIgY3k9IjYuOSIgcj0iMS43Ii8%2BPHJlY3QgeD0iNS42IiB5PSI5LjMiIHdpZHRoPSIzIiBoZWlnaHQ9IjkuMiIvPjxwYXRoIGQ9Ik0xMC40IDkuM2gyLjl2MS4zYy41LS45IDEuNi0xLjUgMi45LTEuNSAyLjQgMCAzLjMgMS42IDMuMyA0LjF2NS4zaC0zdi00LjhjMC0xLjMtLjQtMi4xLTEuNS0yLjFzLTEuNy45LTEuNyAyLjF2NC44aC0yLjl6Ii8%2BPC9nPjwvc3ZnPg%3D%3D" alt="LinkedIn"></a>
+  <a href="https://medium.com/@roboticsbydev"><img src="https://img.shields.io/badge/Medium-0A0A0A?style=for-the-badge&logo=medium&logoColor=D97757" alt="Medium"></a>
+  <a href="https://x.com/roboticsbydev"><img src="https://img.shields.io/badge/X-0A0A0A?style=for-the-badge&logo=x&logoColor=D97757" alt="X"></a>
+  <a href="https://www.instagram.com/roboticsbydev/"><img src="https://img.shields.io/badge/Instagram-0A0A0A?style=for-the-badge&logo=instagram&logoColor=D97757" alt="Instagram"></a>
+  <a href="https://huggingface.co/roboticsbydev"><img src="https://img.shields.io/badge/Hugging%20Face-0A0A0A?style=for-the-badge&logo=huggingface&logoColor=D97757" alt="Hugging Face"></a>
+  <a href="https://linktr.ee/roboticsbydev"><img src="https://img.shields.io/badge/Linktree-0A0A0A?style=for-the-badge&logo=linktree&logoColor=D97757" alt="Linktree"></a>
 </p>
 
 <p align="center">
@@ -23,7 +23,7 @@
 I build intelligent machines. My work sits where AI meets robotics, embedded systems and real hardware: taking models out of the cloud and turning them into systems that can see, understand and act. I'm hooked on the hard part of **Physical AI**, making intelligence work reliably on real hardware.
 
 - 🔧 **Physical AI & Robotics Lead**: edge AI, VLAs, vision and speech on real hardware [⭐](https://nunnarilabs.com)
-- 🚀 **Co-Founder** of a deep-silicon & robotics startup [⭐](https://www.linkedin.com/company/raemox/)
+- 🚀 **Entrepreneur**, building a deep-silicon & robotics startup [⭐](https://www.linkedin.com/company/raemox/)
 - 🌏 **Community Lead** at AI Tamil Nadu, taking AI beyond the metros [⭐](https://aitamilnadu.org/)
 - 🎤 **Speaker & mentor** on Physical AI, world models, VLAs and edge NPUs, often in Tamil
 
@@ -54,15 +54,13 @@ I build intelligent machines. My work sits where AI meets robotics, embedded sys
 </table>
 
 <p align="center">
-  <img src="assets/offclock.svg" width="100%" alt="Off the clock. Playing: Ghost of Tsushima. Watching: One Piece, Naruto, Demon Slayer. Crew: Luffy and Zoro, captain's orders are captain's orders. Riding: Kaze, a Himalayan 450. As long as I live, I will win.">
+  <img src="assets/offclock.svg" width="100%" alt="Off the clock. Playing: Ghost of Tsushima. Watching: movies, anime, manga; Shinobi of the Hidden Leaf. Crew: Straw Hat Pirates, with a straw hat; captain's orders are captain's orders. Riding: Kaze, a Himalayan 450, with a photo of me on it. Quote: As long as I live, there are infinite chances. Monkey D. Luffy.">
 </p>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="profile-3d-contrib/profile-night-rainbow.svg">
-  <source media="(prefers-color-scheme: light)" srcset="profile-3d-contrib/profile-season.svg">
-  <img src="profile-3d-contrib/profile-night-rainbow.svg" width="100%" alt="3D contribution graph">
-</picture>
+<p align="center">
+  <img src="assets/mission.svg" width="100%" alt="Mission log, Hail Mary: a year of GitHub contributions plotted on the way from Sol to Tau Ceti, with contribution, active-day, streak and peak-day readouts. Refreshed daily.">
+</p>
 
 <p align="center">
-  <img src="assets/footer.svg" width="100%" alt="Veni, vidi, vici. I came, I saw, I conquered.">
+  <img src="assets/footer.svg" width="100%" alt="Veni, vidi, vici. I came, I saw, I conquered. Elias.">
 </p>
