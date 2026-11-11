@@ -265,7 +265,7 @@ def hero():
   {tb}
   <text x="56" y="84" class="mono" font-size="15" fill="{ORANGE}" letter-spacing="1">// physical ai &amp; robotics</text>
   <text x="54" y="152" class="sans" font-size="76" font-weight="800" fill="{TEXT}" letter-spacing="-1.5">Devansh</text>
-  {photo_katana(56, 186, 440, -1)}
+  <rect x="58" y="176" width="64" height="4" rx="2" fill="{ORANGE}"/>
   <text x="56" y="242" class="sans" font-size="19" fill="{SOFT}">Engineer  ·  Entrepreneur  ·  Community Lead  ·  Open Source</text>
   <text x="56" y="276" class="sans" font-size="16" fill="{MUTED}">I build intelligent machines, ones that run on metal.</text>
 </g>"""
