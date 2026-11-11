@@ -8,8 +8,23 @@ import re
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-OUT = Path(__file__).resolve().parent.parent / "assets"
-OUT.mkdir(exist_ok=True)
+import os
+SRC = Path(__file__).resolve().parent.parent / "assets"          # inputs (photos, logos)
+OUT = Path(os.environ.get("PROFILE_OUT", SRC))                   # where SVGs are written
+OUT.mkdir(parents=True, exist_ok=True)
+# Optional image slots: drop ghost.*, movies.*, luffy.* (webp/png/jpg) into this folder.
+# Leave it empty/missing to use the built-in original visuals.
+CUSTOM = Path(os.environ.get("PROFILE_CUSTOM", SRC / "custom"))
+
+
+def custom_image(name):
+    """data: URI for CUSTOM/<name>.(webp|png|jpg|jpeg), or None."""
+    import base64
+    for ext, mime in (("webp", "webp"), ("png", "png"), ("jpg", "jpeg"), ("jpeg", "jpeg")):
+        p = CUSTOM / f"{name}.{ext}"
+        if p.exists():
+            return f"data:image/{mime};base64," + base64.b64encode(p.read_bytes()).decode()
+    return None
 
 # palette: mono + coral
 INK = "#0A0A0A"
@@ -179,7 +194,7 @@ def photo_katana(x, y, width, angle=0, rim="#FFFFFF", rim_op=0.35):
     import base64
     _pk[0] += 1
     k = _pk[0]
-    data = base64.b64encode((OUT / "katana.webp").read_bytes()).decode()
+    data = base64.b64encode((SRC / "katana.webp").read_bytes()).decode()
     h = width * KATANA_RATIO
     return (
         f'<defs><filter id="rim{k}" x="-5%" y="-40%" width="110%" height="180%">'
@@ -209,7 +224,7 @@ def hero():
     )
     # portrait (U1 = the human) + spec sheet about me
     import base64
-    photo = base64.b64encode((OUT / "avatar.jpg").read_bytes()).decode()
+    photo = base64.b64encode((SRC / "avatar.jpg").read_bytes()).decode()
     pcx, pcy, pr = 650, 140, 58
     ring = (
         f'<circle cx="{pcx}" cy="{pcy}" r="{pr+10}" fill="none" stroke="{ORANGE}" stroke-width="1" stroke-dasharray="2 5" class="spin"/>'
@@ -364,7 +379,7 @@ def card(name, kicker, title, lines, tags, color, logo=None):
     )
     if logo:
         import base64
-        data = base64.b64encode((OUT / logo[0]).read_bytes()).decode()
+        data = base64.b64encode((SRC / logo[0]).read_bytes()).decode()
         lh = 58
         title_svg = (f'<image x="30" y="50" height="{lh}" width="{lh * logo[1]:.0f}" '
                      f'href="data:image/png;base64,{data}"/>')
@@ -548,7 +563,9 @@ def _wrap(text, n=26):
 
 def offclock():
     import base64
-    W, H = 1000, 420
+    ghost, movies, luffy = custom_image("ghost"), custom_image("movies"), custom_image("luffy")
+    BH = 380                                     # custom Luffy banner height
+    W, H = 1000, (254 + BH + 26) if luffy else 420
     tiles = [
         ("PLAYING", RED, ["Ghost of", "Tsushima"], "all-time favourite"),
         ("WATCHING", ORANGE, ["Movies", "Anime", "Manga"], "Shinobi of the Hidden Leaf"),
@@ -556,7 +573,7 @@ def offclock():
         ("RIDING", ORANGE, ["Kaze  風"], "Himalayan 450 · named for the wind"),
     ]
     tw, gap, x0, y0, th = 215, 20, 40, 66, 172
-    bike = base64.b64encode((OUT / "kaze.webp").read_bytes()).decode()
+    bike = base64.b64encode((SRC / "kaze.webp").read_bytes()).decode()
     out = [
         f'<rect width="{W}" height="{H}" rx="18" fill="{INK}"/>',
         wind(H - 40, 3, RED, W, 0.25, 11),
@@ -588,6 +605,18 @@ def offclock():
                 f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeL)" opacity="0.75"/>'
                 f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeB)" opacity="0.6"/></g>'
             )
+        # (image, crop viewBox in 1920x1080 space or None, extra dim)
+        slot = {"PLAYING": (ghost, "220 60 1100 820", 0.0), "WATCHING": (movies, None, 0.15)}.get(lab)
+        if slot and slot[0]:  # custom background image, darkened on the left for readable text
+            img = (f'<svg x="{x}" y="{y0}" width="{tw}" height="{th}" viewBox="{slot[1]}" preserveAspectRatio="xMidYMid slice">'
+                   f'<image width="1920" height="1080" href="{slot[0]}"/></svg>' if slot[1] else
+                   f'<image x="{x}" y="{y0}" width="{tw}" height="{th}" preserveAspectRatio="xMidYMid slice" href="{slot[0]}"/>')
+            out.append(
+                f'<g clip-path="url(#tile{i})">{img}'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="#000" opacity="{slot[2]}"/>'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeL)"/>'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeB)"/></g>'
+            )
         if lab == "RIDING":   # Kaze: full-bleed photo, shaded for text
             out.append(
                 f'<g clip-path="url(#tile{i})">'
@@ -603,12 +632,20 @@ def offclock():
             out.append(f'<text x="{x+20}" y="{y0+68 + j*(size+8)}" class="sans" font-size="{size}" font-weight="800" fill="{TEXT}">{t(b)}</text>')
         if sub:
             lines = _wrap(sub)
-            col = SOFT if lab in ("RIDING", "CREW") else MUTED
+            col = SOFT if lab in ("RIDING", "CREW") or (slot and slot[0]) else MUTED
             for j, l in enumerate(lines):
                 out.append(f'<text x="{x+20}" y="{y0+th-20 - (len(lines)-1-j)*18}" class="sans" font-size="13" fill="{col}">{t(l)}</text>')
         if lab == "CREW":
             out.append(straw_hat(x + tw - 62, y0 + 42, 0.40))
-    out.append(photo_katana(x0 + 196, y0 + 162, 150, -84))
+    if not ghost:
+        out.append(photo_katana(x0 + 196, y0 + 162, 150, -84))
+    if luffy:   # custom quote banner replaces the drawn flag + quote
+        out.append(f'<clipPath id="banner"><rect x="{x0}" y="254" width="{W-2*x0}" height="{BH}" rx="14"/></clipPath>'
+                   f'<image x="{x0}" y="254" width="{W-2*x0}" height="{BH}" preserveAspectRatio="xMidYMin slice" '
+                   f'href="{luffy}" clip-path="url(#banner)"/>'
+                   f'<rect x="{x0}" y="254" width="{W-2*x0}" height="{BH}" rx="14" fill="none" stroke="{LINE}" stroke-width="1.5"/>')
+        svg("offclock.svg", W, H, "\n".join(out), WIND_CSS + KATANA_CSS + FLAG_CSS)
+        return
     out.append(crew_flag(372, 262, 1.0))
     qx, qy = 590, 306
     out.append(f'<text x="{qx}" y="{qy}" text-anchor="middle" class="mono" font-size="18" fill="{TEXT}">As long as I live,</text>')
