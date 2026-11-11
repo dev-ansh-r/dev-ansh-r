@@ -1,5 +1,10 @@
 name: Mission-Log-Graph
 
+# Regenerates the Hail Mary mission-log graph daily and publishes it to the
+# `output` branch (a single force-pushed commit), so `main` only carries your
+# own commits. README.md loads it from:
+#   https://raw.githubusercontent.com/<owner>/<repo>/output/mission.svg
+
 on:
   schedule:
     - cron: "0 23 * * *"
@@ -14,17 +19,22 @@ jobs:
     name: generate-hail-mary-mission-log
     steps:
       - uses: actions/checkout@v4
-      - name: Generate assets/mission.svg
+      - name: Generate mission.svg
         working-directory: scripts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROFILE_USER: ${{ github.repository_owner }}
+          PROFILE_OUT: ${{ runner.temp }}/output
         run: python3 gen_mission.py
-      - name: Commit & Push
+      - name: Publish to output branch
+        working-directory: ${{ runner.temp }}/output
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          find . -maxdepth 1 -type f ! -name mission.svg -delete
+          git init -q -b output
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add assets/mission.svg
-          git diff --cached --quiet && echo "no change" && exit 0
-          git commit -m "generated: mission log"
-          git push
+          git add mission.svg
+          git commit -q -m "generated: mission log"
+          git push -q --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" output

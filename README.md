@@ -58,7 +58,7 @@ I build intelligent machines. My work sits where AI meets robotics, embedded sys
 </p>
 
 <p align="center">
-  <img src="assets/mission.svg" width="100%" alt="Mission log, Hail Mary: a year of GitHub contributions plotted on the way from Sol to Tau Ceti, with contribution, active-day, streak and peak-day readouts. Refreshed daily.">
+  <img src="https://raw.githubusercontent.com/dev-ansh-r/dev-ansh-r/output/mission.svg" width="100%" alt="Mission log, Hail Mary: a year of GitHub contributions plotted on the way from Sol to Tau Ceti, with contribution, active-day, streak and peak-day readouts. Refreshed daily.">
 </p>
 
 <p align="center">
