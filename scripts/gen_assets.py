@@ -483,6 +483,58 @@ def straw_hat(cx, cy, k=1.0):
 
 
 # ---------------------------------------------------------------- off the clock
+# ---------------------------------------------------------------- crew flag
+def crew_flag(mx, my, k=1.0):
+    """Original pirate flag: black flag waving off a wooden mast, plain skull and
+    crossbones, and a straw hat hung on the mast top. (mx, my) = mast top."""
+    s = lambda v: f"{v*k:.1f}"
+    fx = mx - 3 * k   # flag attaches to the mast's left side
+    flag = (f"M {fx:.1f} {my+14*k:.1f} "
+            f"C {fx-38*k:.1f} {my+2*k:.1f}, {fx-72*k:.1f} {my+26*k:.1f}, {fx-112*k:.1f} {my+12*k:.1f} "
+            f"C {fx-128*k:.1f} {my+8*k:.1f}, {fx-140*k:.1f} {my+14*k:.1f}, {fx-150*k:.1f} {my+12*k:.1f} "
+            f"L {fx-144*k:.1f} {my+92*k:.1f} "
+            f"C {fx-128*k:.1f} {my+96*k:.1f}, {fx-108*k:.1f} {my+86*k:.1f}, {fx-84*k:.1f} {my+96*k:.1f} "
+            f"C {fx-52*k:.1f} {my+108*k:.1f}, {fx-26*k:.1f} {my+86*k:.1f}, {fx:.1f} {my+96*k:.1f} Z")
+    cx, cy = fx - 74 * k, my + 52 * k          # emblem centre
+    bone = "#F2EFE6"
+
+    def crossbone(angle):
+        L = 46 * k
+        return (f'<g transform="rotate({angle} {cx:.1f} {cy+6*k:.1f})">'
+                f'<rect x="{cx-L:.1f}" y="{cy+3*k:.1f}" width="{2*L:.1f}" height="{s(6)}" rx="{s(3)}" fill="{bone}"/>'
+                + "".join(f'<circle cx="{cx+e*L:.1f}" cy="{cy+3*k+dy*k:.1f}" r="{s(4.2)}" fill="{bone}"/>'
+                          for e in (-1, 1) for dy in (0, 6))
+                + "</g>")
+    skull = (
+        f'<circle cx="{cx:.1f}" cy="{cy-4*k:.1f}" r="{s(17)}" fill="{bone}"/>'
+        f'<rect x="{cx-10*k:.1f}" y="{cy+6*k:.1f}" width="{s(20)}" height="{s(12)}" rx="{s(3)}" fill="{bone}"/>'
+        f'<ellipse cx="{cx-6.5*k:.1f}" cy="{cy-5*k:.1f}" rx="{s(4.6)}" ry="{s(5.4)}" fill="#0E0E0E"/>'
+        f'<ellipse cx="{cx+6.5*k:.1f}" cy="{cy-5*k:.1f}" rx="{s(4.6)}" ry="{s(5.4)}" fill="#0E0E0E"/>'
+        f'<path d="M {cx:.1f} {cy+1*k:.1f} l {s(-2.6)} {s(4.5)} h {s(5.2)} z" fill="#0E0E0E"/>'
+        + "".join(f'<line x1="{cx+dx*k:.1f}" y1="{cy+10*k:.1f}" x2="{cx+dx*k:.1f}" y2="{cy+18*k:.1f}" stroke="#0E0E0E" stroke-width="{s(1.1)}"/>'
+                  for dx in (-5, 0, 5))
+    )
+    mast = (
+        f'<defs><linearGradient id="wood" x1="0" x2="1"><stop offset="0" stop-color="#6B4423"/>'
+        f'<stop offset="0.5" stop-color="#A0703F"/><stop offset="1" stop-color="#5A381C"/></linearGradient></defs>'
+        f'<rect x="{mx-3*k:.1f}" y="{my:.1f}" width="{s(7)}" height="{s(132)}" rx="{s(2)}" fill="url(#wood)"/>'
+        f'<circle cx="{mx+0.5*k:.1f}" cy="{my-1*k:.1f}" r="{s(5)}" fill="#C9A15A"/>'
+    )
+    return f"""
+<g>
+  {mast}
+  <g class="wave" style="transform-origin:{fx:.1f}px {my+50*k:.1f}px">
+    <path d="{flag}" fill="#141414" stroke="#4A4A4A" stroke-width="{s(1.6)}"/>
+    {crossbone(28)}{crossbone(-28)}
+    {skull}
+  </g>
+  <g transform="rotate(-14 {mx:.1f} {my:.1f})">{straw_hat(mx + 2*k, my + 4*k, 0.36 * k)}</g>
+</g>"""
+
+
+FLAG_CSS = ".wave{animation:wave 4s ease-in-out infinite}@keyframes wave{50%{transform:skewY(-2.5deg) scaleX(.97)}}"
+
+
 def _wrap(text, n=26):
     words, lines, cur = text.split(), [], ""
     for w_ in words:
@@ -496,7 +548,7 @@ def _wrap(text, n=26):
 
 def offclock():
     import base64
-    W, H = 1000, 404
+    W, H = 1000, 420
     tiles = [
         ("PLAYING", RED, ["Ghost of", "Tsushima"], "all-time favourite"),
         ("WATCHING", ORANGE, ["Movies", "Anime", "Manga"], "Shinobi of the Hidden Leaf"),
@@ -518,6 +570,24 @@ def offclock():
         x = x0 + i * (tw + gap)
         out.append(f'<clipPath id="tile{i}"><rect x="{x}" y="{y0}" width="{tw}" height="{th}" rx="14"/></clipPath>')
         out.append(f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" rx="14" fill="{CARD}"/>')
+        if lab == "CREW":     # original Grand Line scene: sky, clouds, sea
+            sea_y = y0 + th * 0.70
+            clouds = "".join(
+                f'<ellipse cx="{x+cx_:.0f}" cy="{y0+cy_:.0f}" rx="{rx_}" ry="{ry_}" fill="#FFFFFF" opacity="0.85"/>'
+                for cx_, cy_, rx_, ry_ in [(150, 92, 26, 9), (168, 86, 18, 9), (178, 112, 16, 5)]
+            )
+            waves = "".join(
+                f'<path d="M {x} {sea_y + 8 + j*12:.0f} ' + " ".join(f"q 9 -5 18 0" for _ in range(13)) + f'" fill="none" stroke="#9FD3FF" stroke-width="1.2" opacity="{0.6 - j*0.2:.1f}"/>'
+                for j in range(3)
+            )
+            out.append(
+                f'<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F5FB8"/>'
+                f'<stop offset="1" stop-color="#7DB8F0"/></linearGradient></defs>'
+                f'<g clip-path="url(#tile{i})"><rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#sky)"/>{clouds}'
+                f'<rect x="{x}" y="{sea_y:.0f}" width="{tw}" height="{th}" fill="#123A6B"/>{waves}'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeL)" opacity="0.75"/>'
+                f'<rect x="{x}" y="{y0}" width="{tw}" height="{th}" fill="url(#shadeB)" opacity="0.6"/></g>'
+            )
         if lab == "RIDING":   # Kaze: full-bleed photo, shaded for text
             out.append(
                 f'<g clip-path="url(#tile{i})">'
@@ -533,17 +603,18 @@ def offclock():
             out.append(f'<text x="{x+20}" y="{y0+68 + j*(size+8)}" class="sans" font-size="{size}" font-weight="800" fill="{TEXT}">{t(b)}</text>')
         if sub:
             lines = _wrap(sub)
-            col = SOFT if lab == "RIDING" else MUTED
+            col = SOFT if lab in ("RIDING", "CREW") else MUTED
             for j, l in enumerate(lines):
                 out.append(f'<text x="{x+20}" y="{y0+th-20 - (len(lines)-1-j)*18}" class="sans" font-size="13" fill="{col}">{t(l)}</text>')
         if lab == "CREW":
             out.append(straw_hat(x + tw - 62, y0 + 42, 0.40))
     out.append(photo_katana(x0 + 196, y0 + 162, 150, -84))
-    qy = 296
-    out.append(f'<text x="{W/2}" y="{qy}" text-anchor="middle" class="mono" font-size="18" fill="{TEXT}">As long as I live,</text>')
-    out.append(f'<text x="{W/2}" y="{qy+26}" text-anchor="middle" class="mono" font-size="18" fill="{TEXT}">There are infinite chances.</text>')
-    out.append(f'<text x="{W/2}" y="{qy+62}" text-anchor="middle" class="mono" font-size="15" fill="{ORANGE}">- Monkey D. Luffy</text>')
-    svg("offclock.svg", W, H, "\n".join(out), WIND_CSS + KATANA_CSS)
+    out.append(crew_flag(372, 262, 1.0))
+    qx, qy = 590, 306
+    out.append(f'<text x="{qx}" y="{qy}" text-anchor="middle" class="mono" font-size="18" fill="{TEXT}">As long as I live,</text>')
+    out.append(f'<text x="{qx}" y="{qy+26}" text-anchor="middle" class="mono" font-size="18" fill="{TEXT}">There are infinite chances.</text>')
+    out.append(f'<text x="{qx}" y="{qy+62}" text-anchor="middle" class="mono" font-size="15" fill="{ORANGE}">- Monkey D. Luffy</text>')
+    svg("offclock.svg", W, H, "\n".join(out), WIND_CSS + KATANA_CSS + FLAG_CSS)
 
 
 # ---------------------------------------------------------------- footer
