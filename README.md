@@ -4,7 +4,7 @@
 
 
 <p align="center">
-  <img src="assets/hero.svg" width="100%" alt="Devansh. Physical AI and Robotics. Engineer, Entrepreneur, Community Lead, Open Source. I build intelligent machines, ones that run on metal. Photo with a spec sheet: based in Coimbatore, India; community: AI Tamil Nadu; rides Kaze, a Himalayan 450; fuel: anime and games (Jin Sakai).">
+  <img src="assets/hero.svg" width="100%" alt="Devansh. Physical AI and Robotics. Engineer, Entrepreneur, Community Lead, Open Source. I build intelligent machines, ones that run on metal. Photo of me with Qroot, my walking microbot, and a spec sheet: based in Coimbatore, India; community: AI Tamil Nadu; rides Kaze, a Himalayan 450; fuel: anime and games (Jin Sakai).">
 </p>
 
 <p align="center">

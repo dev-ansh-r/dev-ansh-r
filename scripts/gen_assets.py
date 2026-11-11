@@ -224,7 +224,7 @@ def hero():
     )
     # portrait (U1 = the human) + spec sheet about me
     import base64
-    photo = base64.b64encode((SRC / "avatar.jpg").read_bytes()).decode()
+    photo = base64.b64encode((SRC / "avatar-qroot.webp").read_bytes()).decode()
     pcx, pcy, pr = 650, 140, 58
     ring = (
         f'<circle cx="{pcx}" cy="{pcy}" r="{pr+10}" fill="none" stroke="{ORANGE}" stroke-width="1" stroke-dasharray="2 5" class="spin"/>'
@@ -232,9 +232,9 @@ def hero():
         f'<path d="M {pcx-pr-22} {pcy} H {pcx-pr-6} M {pcx+pr+6} {pcy} H {pcx+pr+22} '
         f'M {pcx} {pcy-pr-22} V {pcy-pr-6} M {pcx} {pcy+pr+6} V {pcy+pr+22}" stroke="{ORANGE}" stroke-width="1.4"/>'
         f'<image x="{pcx-pr}" y="{pcy-pr}" width="{pr*2}" height="{pr*2}" clip-path="url(#face)" '
-        f'href="data:image/jpeg;base64,{photo}"/>'
-        f'<text x="{pcx}" y="{pcy+pr+44}" text-anchor="middle" class="mono" font-size="10" fill="{TEXT}" letter-spacing="2">U1 · HUMAN</text>'
-        f'<text x="{pcx}" y="{pcy+pr+58}" text-anchor="middle" class="mono" font-size="8.5" fill="{MUTED}">the one doing the building</text>'
+        f'href="data:image/webp;base64,{photo}"/>'
+        f'<text x="{pcx}" y="{pcy+pr+44}" text-anchor="middle" class="mono" font-size="10" fill="{TEXT}" letter-spacing="2">HUMAN + QROOT</text>'
+        f'<text x="{pcx}" y="{pcy+pr+58}" text-anchor="middle" class="mono" font-size="8.5" fill="{MUTED}">the builder and the build</text>'
     )
     rows = [
         ("BASE", "Coimbatore, India"),
