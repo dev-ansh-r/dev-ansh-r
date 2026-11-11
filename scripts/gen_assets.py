@@ -371,7 +371,7 @@ def pill_row(x, y, tags, color, size=12, gap=8):
     return "".join(out)
 
 
-def card(name, kicker, title, lines, tags, color, logo=None):
+def card(name, kicker, title, lines, tags, color, logo=None, photo=None):
     W, H = 490, 206
     desc = "".join(
         f'<text x="34" y="{(124 if logo else 118) + i*22}" class="sans" font-size="15" fill="{MUTED}">{t(l)}</text>'
@@ -385,12 +385,26 @@ def card(name, kicker, title, lines, tags, color, logo=None):
                      f'href="data:image/png;base64,{data}"/>')
     else:
         title_svg = f'<text x="34" y="80" class="sans" font-size="25" font-weight="800" fill="{TEXT}">{t(title)}</text>'
+    photo_svg = ""
+    if photo:   # real photo on the right, edges faded into the card
+        import base64
+        pdata = base64.b64encode((SRC / photo[0]).read_bytes()).decode()
+        ph = H - 20
+        pw = ph * photo[1]
+        px = W - pw - 18
+        photo_svg = (
+            f'<defs><radialGradient id="pfade" cx="0.5" cy="0.5" r="0.62">'
+            f'<stop offset="0.62" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>'
+            f'<mask id="pmask"><rect x="{px:.0f}" y="10" width="{pw:.0f}" height="{ph}" fill="url(#pfade)"/></mask></defs>'
+            f'<image x="{px:.0f}" y="10" width="{pw:.0f}" height="{ph}" mask="url(#pmask)" '
+            f'href="data:image/webp;base64,{pdata}"/>'
+        )
     body = f"""
 <rect x="1" y="1" width="{W-2}" height="{H-2}" rx="16" fill="{CARD}" stroke="{LINE}" stroke-width="1.5"/>
 <rect x="1" y="24" width="5" height="{H-48}" rx="2.5" fill="{color}"/>
 <text x="34" y="40" class="mono" font-size="11.5" fill="{color}" letter-spacing="2">{t(kicker)}</text>
 {title_svg}
-<text x="{W-34}" y="80" text-anchor="end" class="mono" font-size="18" fill="{color}">↗</text>
+{photo_svg if photo else f'<text x="{W-34}" y="80" text-anchor="end" class="mono" font-size="18" fill="{color}">↗</text>'}
 {desc}
 {pill_row(34, 162, tags, color)}"""
     svg(name, W, H, body)
@@ -398,8 +412,9 @@ def card(name, kicker, title, lines, tags, color, logo=None):
 
 def cards():
     card("card-qroot.svg", "PHYSICAL AI · ROBOTICS", "Qroot microbot",
-         ["A walking microbot that senses, thinks and moves", "on a single edge board. No PC. No cloud."],
-         ["Robotics", "C++", "Python", "RealSense"], "#22C55E", logo=("qroot-logo.png", 480 / 205))
+         ["A walking microbot that senses, thinks", "and moves on one edge board. No cloud."],
+         ["Robotics", "C++", "Python"], "#22C55E", logo=("qroot-logo.png", 480 / 205),
+         photo=("qroot-bot.webp", 202 / 360))
     card("card-skills.svg", "CLAUDE CODE · EDGE AI", "qualcomm-claude-skills",
          ["8 Claude Code skills that turn hard-won edge", "deployment know-how into repeatable flows."],
          ["Claude Code", "Edge AI", "Quantization", "Apache-2.0"], RED)
