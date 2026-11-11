@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="490" height="206" viewBox="0 0 490 206" role="img">
+<style>
+.sans{font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif} .mono{font-family:'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace} .serif{font-family:Georgia, 'Times New Roman', serif}
+
+</style>
+
+<rect x="1" y="1" width="488" height="204" rx="16" fill="#141414" stroke="#262626" stroke-width="1.5"/>
+<rect x="1" y="24" width="5" height="158" rx="2.5" fill="#EDB49C"/>
+<text x="34" y="40" class="mono" font-size="11.5" fill="#EDB49C" letter-spacing="2">DESKTOP · MODEL INTROSPECTION</text>
+<text x="34" y="80" class="sans" font-size="25" font-weight="800" fill="#FAFAFA">Rocky</text>
+<text x="456" y="80" text-anchor="end" class="mono" font-size="18" fill="#EDB49C">↗</text>
+<text x="34" y="118" class="sans" font-size="15" fill="#8A8A8A">Understand any neural network architecture,</text><text x="34" y="140" class="sans" font-size="15" fill="#8A8A8A">paper-grounded. Short sentences. Fist bump.</text>
+<rect x="34" y="162" width="50" height="24" rx="12" fill="none" stroke="#EDB49C" stroke-opacity="0.55"/><text x="59" y="178" text-anchor="middle" class="mono" font-size="12" fill="#CFCFCF">Rust</text><rect x="91.75999999999999" y="162" width="94" height="24" rx="12" fill="none" stroke="#EDB49C" stroke-opacity="0.55"/><text x="139" y="178" text-anchor="middle" class="mono" font-size="12" fill="#CFCFCF">TypeScript</text><rect x="194.16" y="162" width="65" height="24" rx="12" fill="none" stroke="#EDB49C" stroke-opacity="0.55"/><text x="226" y="178" text-anchor="middle" class="mono" font-size="12" fill="#CFCFCF">Python</text><rect x="266.8" y="162" width="42" height="24" rx="12" fill="none" stroke="#EDB49C" stroke-opacity="0.55"/><text x="288" y="178" text-anchor="middle" class="mono" font-size="12" fill="#CFCFCF">MCP</text>
+</svg>
